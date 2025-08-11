@@ -1,31 +1,188 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""
+Generate mobile-friendly vCard landing pages and rounded QR codes (with centered logo).
+Outputs per-employee folder ready for GitHub Pages:
+  output/<slug>/
+    - index.html
+    - <slug>.vcf
+    - qr.png
+
+Requires:
+  pip install qrcode[pil] pillow
+"""
+
+import csv
+import os
+import shutil
+import html
+from pathlib import Path
+from urllib.parse import quote_plus
+
+from PIL import Image
+import qrcode
+from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
+
+# ------------- Configuration -------------
+REPO_USER = "Travnook"
+REPO_NAME = "vcards"
+BASE_PAGES_URL = f"https://{REPO_USER}.github.io/{REPO_NAME}"
+OUTPUT_DIR = Path("output")
+IMAGES_DIR = Path("images")  # where you keep profile, banner, logo images locally
+BRAND_COLOR = "#003847"
+LOADER_TIMEOUT_MS = 2000  # 2 seconds
+# -----------------------------------------
+
+OUTPUT_DIR.mkdir(exist_ok=True)
+
+
+def slugify(s: str) -> str:
+    s = s.strip().lower()
+    allowed = "abcdefghijklmnopqrstuvwxyz0123456789-"
+    s = s.replace(" ", "-")
+    return "".join(ch for ch in s if ch in allowed)
+
+
+def make_vcard(data: dict, path: Path):
+    """Write a simple vCard 3.0 file."""
+    name = data.get("name", "")
+    fn = name
+    email = data.get("email", "")
+    phone = data.get("phone", "")
+    org = data.get("company", "TravNook")
+    title = data.get("designation", "")
+    adr = data.get("address", "")
+
+    vcf_lines = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        f"N:{name}",
+        f"FN:{fn}",
+        f"ORG:{org}",
+    ]
+    if title:
+        vcf_lines.append(f"TITLE:{title}")
+    if phone:
+        vcf_lines.append(f"TEL;TYPE=WORK,VOICE:{phone}")
+    if email:
+        vcf_lines.append(f"EMAIL;TYPE=PREF,INTERNET:{email}")
+    if adr:
+        # place the whole address in the label field
+        vcf_lines.append(f"ADR;TYPE=WORK:;;{adr};;;;")
+    if data.get("website"):
+        vcf_lines.append(f"URL:{data.get('website')}")
+    vcf_lines.append("END:VCARD")
+    path.write_text("\n".join(vcf_lines), encoding="utf-8")
+    print(f"Wrote vCard to {path}")
+
+
+import qrcode
+from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.moduledrawers import CircleModuleDrawer
+from qrcode.image.styles.colormasks import SolidFillColorMask
+from PIL import Image, ImageDraw
+from pathlib import Path
+
+def hex_to_rgb(hex_color):
+    hex_color = hex_color.lstrip('#')
+    return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+def generate_qr(url: str, out_path: Path, logo_path: Path = None, fill_color="#003847", back_color="white"):
+    fill_rgb = hex_to_rgb(fill_color)
+    back_rgb = (255, 255, 255) if back_color == "white" else hex_to_rgb(back_color)
+
+    qr = qrcode.QRCode(
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=4
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+
+    # Create QR with dots only
+    img = qr.make_image(
+        image_factory=StyledPilImage,
+        module_drawer=CircleModuleDrawer(),
+        color_mask=SolidFillColorMask(front_color=fill_rgb, back_color=back_rgb)
+    ).convert("RGBA")
+
+    qr_w, qr_h = img.size
+
+    # Make logo space blank (white)
+    if logo_path:
+        logo_size = qr_w // 4
+        center_x = qr_w // 2
+        center_y = qr_h // 2
+        draw = ImageDraw.Draw(img)
+        draw.rectangle(
+            [
+                (center_x - logo_size // 2, center_y - logo_size // 2),
+                (center_x + logo_size // 2, center_y + logo_size // 2)
+            ],
+            fill=back_rgb
+        )
+
+    # Create squircle mask for rounded edges & frame
+    frame_border = 20
+    squircle_size = (qr_w + frame_border * 2, qr_h + frame_border * 2)
+
+    squircle_mask = Image.new("L", squircle_size, 0)
+    squircle_draw = ImageDraw.Draw(squircle_mask)
+    radius = 60  # Adjust for more/less roundness
+    squircle_draw.rounded_rectangle(
+        [(0, 0), squircle_size],
+        radius=radius,
+        fill=255
+    )
+
+    # White background frame
+    frame = Image.new("RGBA", squircle_size, back_rgb + (255,))
+    frame.paste(img, (frame_border, frame_border), img)
+
+    # Apply squircle mask
+    final_img = Image.new("RGBA", squircle_size, (0, 0, 0, 0))
+    final_img.paste(frame, (0, 0), squircle_mask)
+
+    # If a logo is provided, place it in the blank space
+    if logo_path:
+        logo = Image.open(logo_path).convert("RGBA")
+        logo.thumbnail((logo_size, logo_size), Image.LANCZOS)
+        lx = (squircle_size[0] - logo.width) // 2
+        ly = (squircle_size[1] - logo.height) // 2
+        final_img.paste(logo, (lx, ly), logo)
+
+    final_img.save(out_path)
+    print(f"Wrote QR to {out_path}")
+
+
+HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nehar Shinz - Software Engineer</title>
+<title>{name} - {designation}</title>
 <style>
-    :root {
-        --primary: #003847;
+    :root {{
+        --primary: {brand};
         --primary-hover: #025b6b;
         --text-dark: #222;
         --text-light: #fff;
         --bg-light: #f5f7fa;
         --shadow: 0 8px 20px rgba(0,0,0,0.08);
         --transition: all 0.3s ease;
-    }
-    * {
+    }}
+    * {{
         box-sizing: border-box;
-    }
-    body {
+    }}
+    body {{
         margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: var(--bg-light);
         color: var(--text-dark);
         line-height: 1.6;
-    }
+    }}
     /* Loader */
-    #loader {
+    #loader {{
         position: fixed;
         inset: 0;
         display: flex;
@@ -35,31 +192,31 @@
         background: white;
         z-index: 999;
         transition: var(--transition);
-    }
-    #loader img {
+    }}
+    #loader img {{
         width: 120px;
         animation: pulse 2s ease-in-out infinite;
         margin-bottom: 20px;
-    }
-    #loader .loading-text {
+    }}
+    #loader .loading-text {{
         color: var(--primary);
         font-weight: 600;
         font-size: 1.1rem;
-    }
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); opacity: 0.8; }
-        50% { transform: scale(1.05); opacity: 1; }
-    }
+    }}
+    @keyframes pulse {{
+        0%, 100% {{ transform: scale(1); opacity: 0.8; }}
+        50% {{ transform: scale(1.05); opacity: 1; }}
+    }}
     /* Banner */
-    .banner {
+    .banner {{
         width: 100%;
         max-height: 200px;
         object-fit: cover;
         display: block;
         box-shadow: var(--shadow);
-    }
+    }}
     /* Profile Card */
-    .profile-container {
+    .profile-container {{
         max-width: 650px;
         margin: -80px auto 30px;
         background: var(--text-light);
@@ -68,9 +225,9 @@
         box-shadow: var(--shadow);
         text-align: center;
         position: relative;
-    }
+    }}
     /* Company Logo */
-    .company-logo {
+    .company-logo {{
         position: absolute;
         top: 20px;
         right: 20px;
@@ -78,12 +235,12 @@
         height: 50px;
         opacity: 0.8;
         transition: var(--transition);
-    }
-    .company-logo:hover {
+    }}
+    .company-logo:hover {{
         opacity: 1;
         transform: scale(1.05);
-    }
-    .profile-img {
+    }}
+    .profile-img {{
         width: 160px;
         height: 160px;
         border-radius: 50%;
@@ -92,30 +249,30 @@
         margin-top: -80px;
         background: var(--bg-light);
         box-shadow: var(--shadow);
-    }
-    h1 {
+    }}
+    h1 {{
         margin: 20px 0 8px;
         color: var(--primary);
         font-size: 2rem;
         font-weight: 700;
-    }
-    h2 {
+    }}
+    h2 {{
         margin: 0 0 25px;
         font-size: 1.1rem;
         font-weight: 500;
         color: #666;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-    }
+    }}
     /* Action Buttons */
-    .action-buttons {
+    .action-buttons {{
         display: flex;
         gap: 15px;
         justify-content: center;
         margin: 25px 0;
         flex-wrap: wrap;
-    }
-    .btn {
+    }}
+    .btn {{
         padding: 12px 24px;
         border: none;
         border-radius: 50px;
@@ -127,32 +284,32 @@
         transition: var(--transition);
         cursor: pointer;
         font-size: 0.95rem;
-    }
-    .btn-primary {
+    }}
+    .btn-primary {{
         background: var(--primary);
         color: var(--text-light);
-    }
-    .btn-primary:hover {
+    }}
+    .btn-primary:hover {{
         background: var(--primary-hover);
         transform: translateY(-2px);
-    }
-    .btn-outline {
+    }}
+    .btn-outline {{
         background: transparent;
         color: var(--primary);
         border: 2px solid var(--primary);
-    }
-    .btn-outline:hover {
+    }}
+    .btn-outline:hover {{
         background: var(--primary);
         color: var(--text-light);
         transform: translateY(-2px);
-    }
+    }}
     /* Contact Info */
-    .contact {
+    .contact {{
         margin-top: 30px;
         text-align: left;
         padding: 0 20px;
-    }
-    .contact div {
+    }}
+    .contact div {{
         display: flex;
         align-items: center;
         margin: 15px 0;
@@ -161,37 +318,37 @@
         background: #f8f9fa;
         border-radius: 12px;
         transition: var(--transition);
-    }
-    .contact div:hover {
+    }}
+    .contact div:hover {{
         background: #e9ecef;
         transform: translateX(5px);
-    }
-    .contact div span {
+    }}
+    .contact div span {{
         color: var(--primary);
         font-weight: 600;
         min-width: 90px;
         display: flex;
         align-items: center;
         gap: 8px;
-    }
-    .contact a {
+    }}
+    .contact a {{
         color: var(--text-dark);
         text-decoration: none;
         word-break: break-all;
         flex: 1;
-    }
-    .contact a:hover {
+    }}
+    .contact a:hover {{
         color: var(--primary);
-    }
+    }}
     /* Social Icons */
-    .social {
+    .social {{
         margin-top: 30px;
         display: flex;
         justify-content: center;
         gap: 15px;
         flex-wrap: wrap;
-    }
-    .social a {
+    }}
+    .social a {{
         width: 50px;
         height: 50px;
         display: flex;
@@ -204,103 +361,103 @@
         transition: var(--transition);
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         text-decoration: none;
-    }
-    .social a:hover {
+    }}
+    .social a:hover {{
         background: var(--primary-hover);
         transform: translateY(-3px) scale(1.1);
         box-shadow: 0 6px 15px rgba(0,0,0,0.15);
         color: var(--text-light) !important;
-    }
-    .social a i {
+    }}
+    .social a i {{
         color: var(--text-light) !important;
         font-weight: 900;
         text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
+    }}
     /* Mobile Responsiveness */
-    @media (max-width: 768px) {
-        .profile-container {
+    @media (max-width: 768px) {{
+        .profile-container {{
             margin: -60px 15px 30px;
             padding: 25px 15px 15px;
-        }
-        .company-logo {
+        }}
+        .company-logo {{
             width: 45px;
             height: 45px;
             top: 15px;
             right: 15px;
-        }
-        .profile-img {
+        }}
+        .profile-img {{
             width: 140px;
             height: 140px;
             margin-top: -70px;
-        }
-        h1 {
+        }}
+        h1 {{
             font-size: 1.7rem;
-        }
-        .contact {
+        }}
+        .contact {{
             padding: 0 10px;
-        }
-        .contact div {
+        }}
+        .contact div {{
             flex-direction: column;
             align-items: flex-start;
             gap: 5px;
-        }
-        .contact div span {
+        }}
+        .contact div span {{
             min-width: auto;
-        }
-        .action-buttons {
+        }}
+        .action-buttons {{
             flex-direction: column;
             align-items: center;
-        }
-        .btn {
+        }}
+        .btn {{
             width: 100%;
             max-width: 280px;
             justify-content: center;
-        }
-    }
-    @media (max-width: 480px) {
-        .banner {
+        }}
+    }}
+    @media (max-width: 480px) {{
+        .banner {{
             max-height: 150px;
-        }
-        .profile-container {
+        }}
+        .profile-container {{
             margin: -50px 10px 20px;
-        }
-        .profile-img {
+        }}
+        .profile-img {{
             width: 120px;
             height: 120px;
             margin-top: -60px;
-        }
-        h1 {
+        }}
+        h1 {{
             font-size: 1.5rem;
-        }
-        h2 {
+        }}
+        h2 {{
             font-size: 1rem;
-        }
-        .social a {
+        }}
+        .social a {{
             width: 45px;
             height: 45px;
             font-size: 1.2rem;
-        }
-        .company-logo {
+        }}
+        .company-logo {{
             width: 40px;
             height: 40px;
             top: 15px;
             right: 15px;
-        }
-    }
+        }}
+    }}
     /* Footer */
-    .footer {
+    .footer {{
         text-align: center;
         padding: 30px 20px;
         color: #888;
         font-size: 0.9rem;
-    }
-    .footer img {
+    }}
+    .footer img {{
         width: 30px;
         height: 30px;
         opacity: 0.6;
         margin: 0 8px;
         vertical-align: middle;
-    }
+    }}
 </style>
 <!-- FontAwesome for icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -309,29 +466,29 @@
 
 <!-- Loader -->
 <div id="loader">
-    <img src="logo.png" alt="Loading...">
+    <img src="{logo_rel}" alt="Loading...">
     <div class="loading-text">Loading...</div>
 </div>
 
 <!-- Banner -->
-<img src="banner.jpg" class="banner" alt="Company Banner">
+<img src="{banner_rel}" class="banner" alt="Company Banner">
 
 <!-- Profile -->
 <div class="profile-container">
     <!-- Company Logo -->
-    <img src="logo.png" alt="Company Logo" class="company-logo">
+    <img src="{logo_rel}" alt="Company Logo" class="company-logo">
     
-    <img src="nehar.jpg" alt="Nehar Shinz" class="profile-img">
-    <h1>Nehar Shinz</h1>
-    <h2>Software Engineer</h2>
+    <img src="{profile_rel}" alt="{name}" class="profile-img">
+    <h1>{name}</h1>
+    <h2>{designation}</h2>
 
     <!-- Action Buttons -->
     <div class="action-buttons">
-        <a href="nehar.vcf" download class="btn btn-primary">
+        <a href="{vcf_name}" download class="btn btn-primary">
             <i class="fas fa-download"></i>
             Download Contact
         </a>
-        <a href="tel:+971552514906" class="btn btn-outline">
+        <a href="tel:{phone}" class="btn btn-outline">
             <i class="fas fa-phone"></i>
             Call Now
         </a>
@@ -341,62 +498,191 @@
     <div class="contact">
         <div>
             <span><i class="fas fa-phone"></i> Phone:</span> 
-            <a href="tel:+971552514906">+971552514906</a>
+            <a href="tel:{phone}">{phone}</a>
         </div>
         <div>
             <span><i class="fas fa-envelope"></i> Email:</span> 
-            <a href="mailto:nehar@travnook.com">nehar@travnook.com</a>
+            <a href="mailto:{email}">{email}</a>
         </div>
         <div>
             <span><i class="fas fa-globe"></i> Website:</span> 
-            <a href="https://travnook.com" target="_blank" rel="noopener noreferrer">https://travnook.com</a>
+            <a href="{website}" target="_blank" rel="noopener noreferrer">{website}</a>
         </div>
         <div>
             <span><i class="fas fa-map-marker-alt"></i> Address:</span> 
-            <span>Travnook Travels and Tourism, WTC Dubai</span>
+            <span>{address}</span>
         </div>
     </div>
 
     <!-- Social Links -->
     <div class="social">
-        <a href="https://instagram.com/travnook" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://facebook.com/travnook" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fab fa-facebook"></i></a>
-        <a href="https://linkedin.com/company/travnook" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://tiktok.com/@travnook" target="_blank" rel="noopener noreferrer" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        {socials}
     </div>
 </div>
 
 <!-- Footer -->
 <div class="footer">
-    <img src="logo.png" alt="Company Logo">
+    <img src="{logo_rel}" alt="Company Logo">
     Powered by TravNook
 </div>
 
 <script>
     // Loader delay with smooth fade out
-    window.addEventListener("load", function(){
-        setTimeout(function(){
+    window.addEventListener("load", function(){{
+        setTimeout(function(){{
             const loader = document.getElementById("loader");
             loader.style.opacity = "0";
-            setTimeout(function(){
+            setTimeout(function(){{
                 loader.style.display = "none";
-            }, 300);
-        }, 2000);
-    });
+            }}, 300);
+        }}, {loader_ms});
+    }});
 
     // Add smooth animations on load
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function() {{
         const profileContainer = document.querySelector('.profile-container');
         profileContainer.style.opacity = '0';
         profileContainer.style.transform = 'translateY(30px)';
         
-        setTimeout(function() {
+        setTimeout(function() {{
             profileContainer.style.transition = 'all 0.6s ease';
             profileContainer.style.opacity = '1';
             profileContainer.style.transform = 'translateY(0)';
-        }, 2000 + 200);
-    });
+        }}, {loader_ms} + 200);
+    }});
 </script>
 
 </body>
 </html>
+"""
+
+
+def make_social_buttons(data: dict):
+    mapping = {
+        "instagram": ("Instagram", "fab fa-instagram"),
+        "facebook": ("Facebook", "fab fa-facebook"),
+        "linkedin": ("LinkedIn", "fab fa-linkedin"),
+        "tiktok": ("TikTok", "fab fa-tiktok"),
+    }
+    buttons = []
+    for key, (label, icon) in mapping.items():
+        url = data.get(key, "").strip()
+        if url:
+            # Ensure proper URL format
+            if not url.startswith(('http://', 'https://')):
+                if key == 'instagram':
+                    url = f"https://instagram.com/{url.lstrip('@')}"
+                elif key == 'facebook':
+                    url = f"https://facebook.com/{url}"
+                elif key == 'linkedin':
+                    url = f"https://linkedin.com/in/{url}"
+                elif key == 'tiktok':
+                    url = f"https://tiktok.com/@{url.lstrip('@')}"
+            
+            buttons.append(f'<a href="{html.escape(url)}" target="_blank" rel="noopener noreferrer" title="{label}"><i class="{icon}"></i></a>')
+    return "\n        ".join(buttons)
+
+
+def make_index_html(data: dict, out_path: Path):
+    """Render the HTML_TEMPLATE and write to out_path/index.html"""
+    socials_html = make_social_buttons(data)
+    html_content = HTML_TEMPLATE.format(
+        name=html.escape(data.get("name", "")),
+        designation=html.escape(data.get("designation", "")),
+        phone=html.escape(data.get("phone", "")),
+        email=html.escape(data.get("email", "")),
+        address=html.escape(data.get("address", "")),
+        website=html.escape(data.get("website", "#")),
+        vcf_name=html.escape(data.get("vcf_name", "contact.vcf")),
+        profile_rel=html.escape(data.get("profile_rel", "profile.jpg")),
+        banner_rel=html.escape(data.get("banner_rel", "banner.jpg")),
+        logo_rel=html.escape(data.get("logo_rel", "logo.png")),
+        socials=socials_html,
+        brand=BRAND_COLOR,
+        loader_ms=LOADER_TIMEOUT_MS
+    )
+    out_path.write_text(html_content, encoding="utf-8")
+    print(f"Wrote HTML to {out_path}")
+
+
+def process_employee(row: dict):
+    slug = slugify(row.get("slug") or row.get("name") or "person")
+    outdir = OUTPUT_DIR / slug
+    if outdir.exists():
+        shutil.rmtree(outdir)
+    outdir.mkdir(parents=True)
+
+    # copy images referenced in CSV into outdir (profile/banner/logo). If path is a file in images dir, copy; else assume relative URL and still write.
+    def copy_if_local(key, default_name):
+        val = (row.get(key) or "").strip()
+        if not val:
+            return default_name
+        src = Path(val)
+        if not src.exists():
+            # maybe in images dir
+            src = IMAGES_DIR / val
+        if src.exists():
+            dst = outdir / Path(val).name
+            shutil.copyfile(src, dst)
+            return dst.name
+        else:
+            # fallback - use provided string as external URL or filename (we will use as-is)
+            return val
+
+    profile_rel = copy_if_local("profile_pic", "profile.jpg")
+    banner_rel = copy_if_local("banner_image", "banner.jpg")
+    logo_rel = copy_if_local("logo", "logo.png")
+
+    # vcf filename
+    vcf_name = f"{slug}.vcf"
+    vcf_path = outdir / vcf_name
+
+    # write vcard
+    data = dict(row)
+    data["company"] = data.get("company", "TravNook")
+    data["vcf_name"] = vcf_name
+    make_vcard(data, vcf_path)
+
+    # generate index.html
+    data.update({
+        "profile_rel": profile_rel,
+        "banner_rel": banner_rel,
+        "logo_rel": logo_rel,
+    })
+    index_path = outdir / "index.html"
+    make_index_html(data, index_path)
+
+    # produce QR pointing to GitHub Pages URL for this slug
+    page_url = f"{BASE_PAGES_URL}/{slug}/"
+    qr_out = outdir / "qr.png"
+    logo_file = (outdir / logo_rel) if (outdir / logo_rel).exists() else (IMAGES_DIR / logo_rel if (IMAGES_DIR / logo_rel).exists() else None)
+    generate_qr(page_url, qr_out, logo_path=logo_file)
+
+    print(f"Completed {slug} -> {page_url}\n")
+
+
+def read_csv_and_process(csv_path="employees.csv"):
+    with open(csv_path, newline="", encoding="utf-8") as fh:
+        reader = csv.DictReader(fh)
+        for row in reader:
+            process_employee(row)
+    
+    # Create .nojekyll file to disable Jekyll processing on GitHub Pages
+    nojekyll_path = OUTPUT_DIR / ".nojekyll"
+    nojekyll_path.write_text("", encoding="utf-8")
+    print("Created .nojekyll file to disable Jekyll processing")
+
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Generate vCard landing pages & rounded QR codes.")
+    parser.add_argument("--csv", default="employees.csv", help="CSV file containing employee data")
+    args = parser.parse_args()
+
+    if not Path(args.csv).exists():
+        print(f"CSV file {args.csv} not found. Please create employees.csv (see script comments).")
+        raise SystemExit(1)
+
+    read_csv_and_process(args.csv)
+    print("All done. Commit the 'output' directory to your repo and push to GitHub Pages.")
+    print("Note: The .nojekyll file will prevent Jekyll from processing your static HTML files.")
