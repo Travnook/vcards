@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Nehar Shinz
+FN:Nehar Shinz
+ORG:TravNook
+TITLE:Software Engineer
+TEL;TYPE=WORK,VOICE:+971552514906
+EMAIL;TYPE=PREF,INTERNET:nehar@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism, WTC Dubai;;;;
+URL:https://travnook.com
+END:VCARD
