@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Alex Jones
+FN:Alex Jones
+ORG:TravNook
+TITLE:Engineer
+TEL;TYPE=WORK,VOICE:+1987654321
+EMAIL;TYPE=PREF,INTERNET:alex@travnook.com
+ADR;TYPE=WORK:;;456 Another Ave, City;;;;
+URL:https://travnook.com
+END:VCARD
