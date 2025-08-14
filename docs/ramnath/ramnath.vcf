@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Ramnath Prasanth
+FN:Ramnath Prasanth
+ORG:TravNook
+TITLE:Travel Consultant
+TEL;TYPE=WORK,VOICE:+971582828501
+EMAIL;TYPE=PREF,INTERNET:rami@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD
