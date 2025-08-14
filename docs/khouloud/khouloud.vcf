@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Khouloud Fadli
+FN:Khouloud Fadli
+ORG:TravNook
+TITLE:Senior Travel Consultant
+TEL;TYPE=WORK,VOICE:+971502080142
+EMAIL;TYPE=PREF,INTERNET:khouloud@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD
