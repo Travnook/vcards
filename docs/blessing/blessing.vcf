@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Blessing Samuel
+FN:Blessing Samuel
+ORG:TravNook
+TITLE:Travel Consultant
+TEL;TYPE=WORK,VOICE:+971505405096
+EMAIL;TYPE=PREF,INTERNET:blessing@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD

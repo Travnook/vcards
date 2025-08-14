@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Hadjer Ouldali
+FN:Hadjer Ouldali
+ORG:TravNook
+TITLE:Ticketing Agent
+TEL;TYPE=WORK,VOICE:+971558773090
+EMAIL;TYPE=PREF,INTERNET:hadjer@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD

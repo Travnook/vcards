@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Mir Mohamed
+FN:Mir Mohamed
+ORG:TravNook
+TITLE:Travel Consultant
+TEL;TYPE=WORK,VOICE:+971526692260
+EMAIL;TYPE=PREF,INTERNET:nazish@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD

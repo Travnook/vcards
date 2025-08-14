@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Muneer Abdul
+FN:Muneer Abdul
+ORG:TravNook
+TITLE:Senior Travel Consultant
+TEL;TYPE=WORK,VOICE:+971555663373
+EMAIL;TYPE=PREF,INTERNET:muneer@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD

@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Athul Saji
+FN:Athul Saji
+ORG:TravNook
+TITLE:Senior Travel Consultant
+TEL;TYPE=WORK,VOICE:+971506340503
+EMAIL;TYPE=PREF,INTERNET:athul@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD

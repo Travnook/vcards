@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Irfan Sheikh
+FN:Irfan Sheikh
+ORG:TravNook
+TITLE:Team Leader
+TEL;TYPE=WORK,VOICE:+971507405081
+EMAIL;TYPE=PREF,INTERNET:irfan@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD

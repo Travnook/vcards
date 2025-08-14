@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Hina Zakir
+FN:Hina Zakir
+ORG:TravNook
+TITLE:Team Leader
+TEL;TYPE=WORK,VOICE:+971502090891
+EMAIL;TYPE=PREF,INTERNET:hina@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD

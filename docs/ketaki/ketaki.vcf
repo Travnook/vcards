@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Ketaki Dahale
+FN:Ketaki Dahale
+ORG:TravNook
+TITLE:Travel Consultant
+TEL;TYPE=WORK,VOICE:+971509804069
+EMAIL;TYPE=PREF,INTERNET:ketaki@travnook.com
+ADR;TYPE=WORK:;;Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai;;;;
+URL:www.travnook.com
+END:VCARD
