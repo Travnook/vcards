@@ -19,25 +19,20 @@
     }
     * {
         box-sizing: border-box;
-        margin: 0;
-        padding: 0;
     }
     body {
+        margin: 0;
         font-family: 'Poppins', sans-serif;
         background: var(--bg-light);
         color: var(--text-dark);
         line-height: 1.6;
     }
-
+    
     /* Contact Page Styles */
     .contact-page {
         display: block;
-        transition: all 0.6s ease;
     }
-    .contact-page.hidden {
-        display: none;
-    }
-
+    
     /* Loader */
     #loader {
         position: fixed;
@@ -64,7 +59,6 @@
         0%, 100% { transform: scale(1); opacity: 0.8; }
         50% { transform: scale(1.05); opacity: 1; }
     }
-
     /* Travel Icon Banner */
     .travel-banner {
         width: 100%;
@@ -100,7 +94,6 @@
         0%, 100% { transform: translateY(0px) rotate(var(--rotation)); }
         50% { transform: translateY(-10px) rotate(var(--rotation)); }
     }
-
     /* Profile Card */
     .profile-container {
         max-width: 650px;
@@ -112,7 +105,6 @@
         text-align: center;
         position: relative;
     }
-
     /* Company Logo */
     .company-logo {
         position: absolute;
@@ -122,13 +114,11 @@
         height: 50px;
         opacity: 0.8;
         transition: var(--transition);
-        cursor: pointer;
     }
     .company-logo:hover {
         opacity: 1;
         transform: scale(1.05);
     }
-
     .profile-img {
         width: 160px;
         height: 160px;
@@ -139,14 +129,12 @@
         background: var(--bg-light);
         box-shadow: var(--shadow);
     }
-
     h1 {
         margin: 20px 0 8px;
         color: var(--primary);
         font-size: 2rem;
         font-weight: 700;
     }
-
     h2 {
         margin: 0 0 25px;
         font-size: 1.1rem;
@@ -160,7 +148,6 @@
     h2:hover {
         color: var(--primary);
     }
-
     /* Action Buttons */
     .action-buttons {
         display: flex;
@@ -200,7 +187,6 @@
         color: var(--text-light);
         transform: translateY(-2px);
     }
-
     /* Contact Info */
     .contact {
         margin-top: 30px;
@@ -230,6 +216,20 @@
         gap: 8px;
         font-size: 1.1rem;
     }
+    /* Contact Header styling for increased icon-title distance */
+    .contact-header {
+        color: var(--primary);
+        font-weight: 500;
+        min-width: 90px;
+        display: flex;
+        align-items: center;
+        gap: 15px; /* Increased from 8px to 15px for more distance between icon and title */
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    .contact-content {
+        margin-left: 33px; /* Align content with the text (icon width + gap) */
+    }
     .contact a {
         color: var(--text-dark);
         text-decoration: none;
@@ -239,7 +239,6 @@
     .contact a:hover {
         color: var(--primary);
     }
-
     /* Company Contact Section */
     .company-contact {
         margin-top: 40px;
@@ -298,7 +297,7 @@
         fill: currentColor;
         flex-shrink: 0;
     }
-
+    
     /* Footer */
     .footer {
         text-align: center;
@@ -313,40 +312,127 @@
         margin: 0 8px;
         vertical-align: middle;
     }
-    .powered-by {
+    .footer .powered-by {
         cursor: pointer;
         transition: var(--transition);
     }
-    .powered-by:hover {
+    .footer .powered-by:hover {
         color: var(--primary);
-    }
-
-    /* Toast Notification */
-    .toast {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 16px 24px;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        transform: translateX(400px);
-        transition: transform 0.4s ease;
-        z-index: 10000;
-        font-weight: 500;
-    }
-    .toast.show {
-        transform: translateX(0);
     }
 
     /* Memory Vault Styles */
     .memory-vault {
         display: none;
-        min-height: 100vh;
+        position: fixed;
+        inset: 0;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        animation: fadeInUp 0.8s ease forwards;
+        z-index: 1000;
+        overflow-y: auto;
         padding-bottom: 50px;
+    }
+
+    .vault-container {
+        width: 100%;
+        max-width: 1200px;
+        padding: 20px;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        flex-direction: column;
+    }
+
+    /* Login Screen */
+    .login-screen {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        padding: 60px 40px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+        margin: 0 auto;
+        transform: scale(0.9);
+        animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    }
+
+    @keyframes bounceIn {
+        to {
+            transform: scale(1);
+        }
+    }
+
+    .login-screen h1 {
+        color: #4a5568;
+        margin: 20px 0 8px;
+        font-size: 2.5rem;
+        font-weight: 300;
+    }
+
+    .login-screen p {
+        color: #718096;
+        margin-bottom: 40px;
+        font-size: 1.1rem;
+    }
+
+    .password-input {
+        width: 100%;
+        padding: 18px 25px;
+        border: 2px solid #e2e8f0;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        text-align: center;
+        letter-spacing: 8px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+        margin-bottom: 30px;
+    }
+
+    .password-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: scale(1.02);
+    }
+
+    .login-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 18px 40px;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+    }
+
+    .error-message {
+        color: #e53e3e;
+        margin-top: 15px;
+        font-size: 0.9rem;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .error-message.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Memory Vault Content */
+    .memory-vault-content {
+        display: none;
+        animation: fadeInUp 0.8s ease forwards;
+        width: 100%;
     }
 
     @keyframes fadeInUp {
@@ -415,7 +501,7 @@
         transform-origin: center;
     }
 
-    /* Position cards in circle */
+    /* Position cards in circle - calculated positions with more spacing */
     .memory-card:nth-child(1) { 
         transform: translateX(0px) translateY(-150px) scale(1);
         z-index: 10;
@@ -563,10 +649,10 @@
         transform: translateY(-1px);
     }
 
-    .back-btn {
+    .logout-btn {
         position: fixed;
         top: max(20px, env(safe-area-inset-top, 20px));
-        left: max(20px, env(safe-area-inset-left, 20px));
+        right: max(20px, env(safe-area-inset-right, 20px));
         background: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(10px);
         color: white;
@@ -579,9 +665,32 @@
         z-index: 1000;
     }
 
-    .back-btn:hover {
+    .logout-btn:hover {
         background: rgba(255, 255, 255, 0.35);
         transform: translateY(-2px);
+    }
+
+    /* Toast Notification */
+    .toast {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px 30px;
+        border-radius: 15px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        z-index: 10000;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
 
     /* Mobile Responsiveness */
@@ -607,6 +716,21 @@
         .contact {
             padding: 0 10px;
         }
+        .contact-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px 16px;
+        }
+        .contact-label {
+            min-width: auto;
+            font-size: 0.95rem;
+            gap: 10px;
+        }
+        .contact-value {
+            margin-left: 0;
+            font-size: 0.95rem;
+        }
         .action-buttons {
             flex-direction: column;
             align-items: center;
@@ -615,6 +739,14 @@
             width: 100%;
             max-width: 280px;
             justify-content: center;
+        }
+        .social a {
+            width: 44px;
+            height: 44px;
+        }
+        .social a svg {
+            width: 20px;
+            height: 20px;
         }
         .company-contact .company-info {
             flex-direction: column;
@@ -626,22 +758,56 @@
             justify-content: center;
         }
 
-        /* Vault mobile styles */
+        /* Vault Mobile Styles */
+        .vault-container {
+            padding: 15px;
+        }
+
+        .login-screen {
+            padding: 40px 30px;
+            margin: 20px;
+        }
+
+        .login-screen h1 {
+            font-size: 2rem;
+        }
+
+        .logout-btn {
+            top: max(15px, env(safe-area-inset-top, 15px));
+            right: max(15px, env(safe-area-inset-right, 15px));
+            padding: 10px 16px;
+            font-size: 0.8rem;
+            border-radius: 20px;
+        }
+
         .vault-header {
             margin-bottom: 30px;
             padding-top: max(70px, calc(env(safe-area-inset-top, 20px) + 50px));
         }
+
         .vault-header h1 {
             font-size: 2.2rem;
         }
+
+        .vault-header p {
+            font-size: 1rem;
+        }
+
+        .carousel-instructions {
+            font-size: 0.85rem;
+        }
+
         .carousel-container {
             height: 350px;
             max-width: 100%;
         }
+
         .memory-card {
             width: 180px;
             min-height: 140px;
         }
+
+        /* Adjusted mobile positions for 6 cards with better spacing */
         .memory-card:nth-child(1) { 
             transform: translateX(0px) translateY(-120px) scale(1);
         }
@@ -660,9 +826,134 @@
         .memory-card:nth-child(6) { 
             transform: translateX(-150px) translateY(-60px) scale(0.9);
         }
+
+        .card-front {
+            padding: 20px 15px;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .card-front h3 {
+            font-size: 0.9rem;
+        }
+
+        .card-back {
+            padding: 20px;
+        }
+
+        .memory-date {
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+        }
+
+        .memory-text {
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .carousel-nav {
+            gap: 20px;
+            margin-top: 35px;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            font-size: 0.85rem;
+        }
     }
 
     @media (max-width: 480px) {
+        .login-screen {
+            padding: 30px 20px;
+        }
+
+        .logout-btn {
+            top: max(10px, env(safe-area-inset-top, 10px));
+            right: max(10px, env(safe-area-inset-right, 10px));
+            padding: 8px 14px;
+            font-size: 0.75rem;
+            border-radius: 18px;
+        }
+
+        .vault-header {
+            margin-bottom: 25px;
+            padding-top: max(65px, calc(env(safe-area-inset-top, 20px) + 45px));
+        }
+
+        .vault-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .carousel-container {
+            height: 300px;
+        }
+
+        .memory-card {
+            width: 160px;
+            min-height: 120px;
+        }
+
+        /* Further adjusted for small mobile with 6 cards */
+        .memory-card:nth-child(1) { 
+            transform: translateX(0px) translateY(-100px) scale(1);
+        }
+        .memory-card:nth-child(2) { 
+            transform: translateX(120px) translateY(-50px) scale(0.9);
+        }
+        .memory-card:nth-child(3) { 
+            transform: translateX(120px) translateY(50px) scale(0.8);
+        }
+        .memory-card:nth-child(4) { 
+            transform: translateX(0px) translateY(100px) scale(0.7);
+        }
+        .memory-card:nth-child(5) { 
+            transform: translateX(-120px) translateY(50px) scale(0.8);
+        }
+        .memory-card:nth-child(6) { 
+            transform: translateX(-120px) translateY(-50px) scale(0.9);
+        }
+
+        .card-front {
+            padding: 15px 12px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .card-front h3 {
+            font-size: 0.8rem;
+        }
+
+        .card-back {
+            padding: 15px;
+        }
+
+        .memory-date {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+        }
+
+        .memory-text {
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .carousel-nav {
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .nav-btn {
+            padding: 10px 18px;
+        }
+
         .banner {
             max-height: 150px;
         }
@@ -684,49 +975,42 @@
         .contact {
             padding: 0 5px;
         }
+        .contact-item {
+            padding: 12px 14px;
+            margin: 14px 0;
+        }
+        .contact-label {
+            font-size: 0.9rem;
+            gap: 8px;
+        }
+        .contact-label svg {
+            width: 16px;
+            height: 16px;
+        }
+        .contact-value {
+            font-size: 0.9rem;
+        }
+        .social a {
+            width: 42px;
+            height: 42px;
+        }
+        .social a svg {
+            width: 18px;
+            height: 18px;
+        }
         .company-logo {
             width: 40px;
             height: 40px;
+            top: 15px;
+            right: 15px;
         }
         .btn {
             font-size: 0.9rem;
             padding: 10px 20px;
         }
-
-        /* Small mobile vault styles */
-        .vault-header h1 {
-            font-size: 1.8rem;
-        }
-        .carousel-container {
-            height: 300px;
-        }
-        .memory-card {
-            width: 160px;
-            min-height: 120px;
-        }
-        .memory-card:nth-child(1) { 
-            transform: translateX(0px) translateY(-100px) scale(1);
-        }
-        .memory-card:nth-child(2) { 
-            transform: translateX(120px) translateY(-50px) scale(0.9);
-        }
-        .memory-card:nth-child(3) { 
-            transform: translateX(120px) translateY(50px) scale(0.8);
-        }
-        .memory-card:nth-child(4) { 
-            transform: translateX(0px) translateY(100px) scale(0.7);
-        }
-        .memory-card:nth-child(5) { 
-            transform: translateX(-120px) translateY(50px) scale(0.8);
-        }
-        .memory-card:nth-child(6) { 
-            transform: translateX(-120px) translateY(-50px) scale(0.9);
-        }
-        .carousel-nav {
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin-top: 25px;
+        .btn svg {
+            width: 16px;
+            height: 16px;
         }
     }
 
@@ -742,14 +1026,14 @@
 </head>
 <body>
 
+<!-- Loader -->
+<div id="loader">
+    <img src="logo.png" alt="Loading...">
+    <div class="loading-text">Loading...</div>
+</div>
+
 <!-- Contact Page -->
 <div class="contact-page" id="contactPage">
-    <!-- Loader -->
-    <div id="loader">
-        <img src="logo.png" alt="Loading...">
-        <div class="loading-text">Loading...</div>
-    </div>
-
     <!-- Travel Banner -->
     <div class="travel-banner">
         <!-- Airplane -->
@@ -792,19 +1076,19 @@
     <!-- Profile -->
     <div class="profile-container">
         <!-- Company Logo -->
-        <img src="logo.png" alt="Company Logo" class="company-logo" onclick="handleClick('logo')">
+        <img src="logo.png" alt="Company Logo" class="company-logo">
         
         <img src="karishma.jpg" alt="Karishma Bharati" class="profile-img">
         <h1>Karishma Bharati</h1>
-        <h2 id="designation" onclick="handleClick('designation')">Travel Consultant</h2>
+        <h2 id="designation">Travel Consultant</h2>
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-            <a href="karishma.vcf" download class="btn btn-primary" onclick="handleClick('other')">
+            <a href="karishma.vcf" download class="btn btn-primary">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                 Add to Contact
             </a>
-            <a href="tel:+971525570045" class="btn btn-outline" onclick="handleClick('other')">
+            <a href="tel:+971525570045" class="btn btn-outline">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                 Call Now
             </a>
@@ -812,33 +1096,41 @@
 
         <!-- Contact -->
         <div class="contact">
-            <div onclick="handleClick('other')">
-                <span>
+            <div class="contact-item">
+                <div class="contact-label">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                     Phone:
-                </span>
-                <a href="tel:+971525570045">+971525570045</a>
+                </div>
+                <div class="contact-value">
+                    <a href="tel:+971525570045">+971525570045</a>
+                </div>
             </div>
-            <div onclick="handleClick('other')">
-                <span>
+            <div class="contact-item">
+                <div class="contact-label">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                     Email:
-                </span>
-                <a href="mailto:karishma@travnook.com">karishma@travnook.com</a>
+                </div>
+                <div class="contact-value">
+                    <a href="mailto:karishma@travnook.com">karishma@travnook.com</a>
+                </div>
             </div>
-            <div onclick="handleClick('other')">
-                <span>
+            <div class="contact-item">
+                <div class="contact-label">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
                     Website:
-                </span>
-                <a href="www.travnook.com" target="_blank" rel="noopener noreferrer">www.travnook.com</a>
+                </div>
+                <div class="contact-value">
+                    <a href="www.travnook.com" target="_blank" rel="noopener noreferrer">www.travnook.com</a>
+                </div>
             </div>
-            <div onclick="handleClick('other')">
-                <span>
+            <div class="contact-item">
+                <div class="contact-label">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     Address:
-                </span>
-                <span>Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai</span>
+                </div>
+                <div class="contact-value">
+                    <span>Travnook Travels and Tourism,  Level 1, Ibis One Central, World Trade Center, Dubai</span>
+                </div>
             </div>
         </div>
 
@@ -849,15 +1141,15 @@
                 TravNook Contact
             </h3>
             <div class="company-info">
-                <a href="https://whatsapp.com/channel/0029Vb6ENyL9sBI6xTrA570X" target="_blank" rel="noopener noreferrer" onclick="handleClick('other')">
+                <a href="https://whatsapp.com/channel/0029Vb6ENyL9sBI6xTrA570X" target="_blank" rel="noopener noreferrer">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.051 3.488"/></svg>
                     +971 54 438 80 38
                 </a>
-                <a href="mailto:contact@travnook.com" target="_blank" rel="noopener noreferrer" onclick="handleClick('other')">
+                <a href="mailto:contact@travnook.com" target="_blank" rel="noopener noreferrer">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                     contact@travnook.com
                 </a>
-                <a href="https://maps.app.goo.gl/TtUBkjdRf9vxxCUs8" target="_blank" rel="noopener noreferrer" onclick="handleClick('other')">
+                <a href="https://maps.app.goo.gl/TtUBkjdRf9vxxCUs8" target="_blank" rel="noopener noreferrer">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     Location
                 </a>
@@ -867,42 +1159,42 @@
             <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 15px;">
                 <a href="https://www.facebook.com/travnook.travels" target="_blank" rel="noopener noreferrer" 
                    style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; transition: var(--transition); text-decoration: none;"
-                   title="TravNook Facebook" onclick="handleClick('other')"
+                   title="TravNook Facebook"
                    onmouseover="this.style.background='var(--primary-hover)'; this.style.transform='scale(1.1)'"
                    onmouseout="this.style.background='var(--primary)'; this.style.transform='scale(1)'">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                 </a>
                 <a href="https://x.com/TravnookTravel" target="_blank" rel="noopener noreferrer"
                    style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; transition: var(--transition); text-decoration: none;"
-                   title="TravNook Twitter" onclick="handleClick('other')"
+                   title="TravNook Twitter"
                    onmouseover="this.style.background='var(--primary-hover)'; this.style.transform='scale(1.1)'"
                    onmouseout="this.style.background='var(--primary)'; this.style.transform='scale(1)'">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
                 </a>
                 <a href="https://instagram.com/travnook_travels" target="_blank" rel="noopener noreferrer"
                    style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; transition: var(--transition); text-decoration: none;"
-                   title="TravNook Instagram" onclick="handleClick('other')"
+                   title="TravNook Instagram"
                    onmouseover="this.style.background='var(--primary-hover)'; this.style.transform='scale(1.1)'"
                    onmouseout="this.style.background='var(--primary)'; this.style.transform='scale(1)'">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                 </a>
                 <a href="https://www.tiktok.com/@travnooktravels" target="_blank" rel="noopener noreferrer"
                    style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; transition: var(--transition); text-decoration: none;"
-                   title="TravNook TikTok" onclick="handleClick('other')"
+                   title="TravNook TikTok"
                    onmouseover="this.style.background='var(--primary-hover)'; this.style.transform='scale(1.1)'"
                    onmouseout="this.style.background='var(--primary)'; this.style.transform='scale(1)'">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
                 </a>
                 <a href="https://www.youtube.com/channel/UCZyM9kyhiC5QzHNfjrAlsgQ" target="_blank" rel="noopener noreferrer"
                    style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; transition: var(--transition); text-decoration: none;"
-                   title="TravNook YouTube" onclick="handleClick('other')"
+                   title="TravNook YouTube"
                    onmouseover="this.style.background='var(--primary-hover)'; this.style.transform='scale(1.1)'"
                    onmouseout="this.style.background='var(--primary)'; this.style.transform='scale(1)'">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                 </a>
                 <a href="https://www.linkedin.com/company/travnook/" target="_blank" rel="noopener noreferrer"
                    style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; transition: var(--transition); text-decoration: none;"
-                   title="TravNook LinkedIn" onclick="handleClick('other')"
+                   title="TravNook LinkedIn"
                    onmouseover="this.style.background='var(--primary-hover)'; this.style.transform='scale(1.1)'"
                    onmouseout="this.style.background='var(--primary)'; this.style.transform='scale(1)'">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
@@ -914,117 +1206,134 @@
     <!-- Footer -->
     <div class="footer">
         <img src="logo.png" alt="Company Logo">
-        <div style="margin: 15px 0;" class="powered-by" onclick="handleClick('powered')">Powered by TravNook</div>
+        <div style="margin: 15px 0;" class="powered-by" id="poweredBy">Powered by TravNook</div>
+    </div>
+</div>
+
+<!-- Memory Vault -->
+<div class="memory-vault" id="memoryVault">
+    <div class="vault-container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <h1>🔐</h1>
+            <h1>Memory Vault</h1>
+            <p>Enter your secret code to unlock precious memories</p>
+            <input type="password" class="password-input" id="passwordInput" placeholder="• • • • •" maxlength="8">
+            <br>
+            <button class="login-btn" onclick="checkPassword()">Unlock Memories</button>
+            <div class="error-message" id="errorMessage">Incorrect password. Try again!</div>
+        </div>
+
+        <!-- Memory Vault Content -->
+        <div class="memory-vault-content" id="memoryVaultContent">
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            
+            <div class="vault-header">
+                <h1>✨ Your Memory Vault ✨</h1>
+                <p>Click on any card to reveal a precious memory</p>
+                <div class="carousel-instructions">💫 Swipe or use buttons to rotate • Tap cards to flip</div>
+            </div>
+
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="memory-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">🍽️</div>
+                                <h3>Our Meal</h3>
+                            </div>
+                            <div class="card-back">
+                                <div class="memory-date">July 23</div>
+                                <div class="memory-text">Seekh Paratha from JJ Jalebi. Every bite tasted better because we shared it together.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="memory-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">🎬</div>
+                                <h3>Movie Night</h3>
+                            </div>
+                            <div class="card-back">
+                                <div class="memory-date">July 24</div>
+                                <div class="memory-text">365 days under the blanket. The movie was good, but being wrapped up close to you was better.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="memory-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">🎵</div>
+                                <h3>Our Song</h3>
+                            </div>
+                            <div class="card-back">
+                                <div class="memory-date">July 18</div>
+                                <div class="memory-text">Dil Toh Baccha hai Ji. When this song plays, I think of you and how you make my heart feel.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="memory-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">🧸</div>
+                                <h3>Sweet Memory</h3>
+                            </div>
+                            <div class="card-back">
+                                <div class="memory-date">July 26</div>
+                                <div class="memory-text">A stress toy to remember the day. Simple, but it carries the weight of your thoughts and our day.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="memory-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">💋</div>
+                                <h3>New First Kiss</h3>
+                            </div>
+                            <div class="card-back">
+                                <div class="memory-date">August 15</div>
+                                <div class="memory-text">That happened in the corridor. Exciting, hot, perfect and everything wrapped up in one magical moment.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="memory-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">✨</div>
+                                <h3>New Beginning</h3>
+                            </div>
+                            <div class="card-back">
+                                <div class="memory-date">August 15</div>
+                                <div class="memory-text">Let's get something new. Your words sparked hope for all the adventures and memories we'll create together.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-nav">
+                <button class="nav-btn" onclick="rotateCarousel(-1)">⬅️ Previous</button>
+                <button class="nav-btn" onclick="rotateCarousel(1)">➡️ Next</button>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Toast Notification -->
 <div class="toast" id="toast">🎉 Easter Egg Unlocked!</div>
 
-<!-- Memory Vault -->
-<div class="memory-vault" id="memoryVault">
-    <button class="back-btn" onclick="backToContact()">⬅️ Back</button>
-    
-    <div class="vault-header">
-        <h1>✨ Your Memory Vault ✨</h1>
-        <p>Click on any card to reveal a precious memory</p>
-        <div class="carousel-instructions">💫 Swipe or use buttons to rotate • Tap cards to flip</div>
-    </div>
-
-    <div class="carousel-container">
-        <div class="carousel-track" id="carouselTrack">
-            <div class="memory-card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-icon">🍽️</div>
-                        <h3>Our Meal</h3>
-                    </div>
-                    <div class="card-back">
-                        <div class="memory-date">July 23</div>
-                        <div class="memory-text">Seekh Paratha from JJ Jalebi. Every bite tasted better because we shared it together.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="memory-card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-icon">🎬</div>
-                        <h3>Movie Night</h3>
-                    </div>
-                    <div class="card-back">
-                        <div class="memory-date">July 24</div>
-                        <div class="memory-text">365 days under the blanket. The movie was good, but being wrapped up close to you was better.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="memory-card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-icon">🎵</div>
-                        <h3>Our Song</h3>
-                    </div>
-                    <div class="card-back">
-                        <div class="memory-date">July 18</div>
-                        <div class="memory-text">Dil Toh Baccha hai Ji. When this song plays, I think of you and how you make my heart feel.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="memory-card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-icon">🧸</div>
-                        <h3>Sweet Memory</h3>
-                    </div>
-                    <div class="card-back">
-                        <div class="memory-date">July 26</div>
-                        <div class="memory-text">A stress toy to remember the day. Simple, but it carries the weight of your thoughts and our day.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="memory-card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-icon">💋</div>
-                        <h3>New First Kiss</h3>
-                    </div>
-                    <div class="card-back">
-                        <div class="memory-date">August 15</div>
-                        <div class="memory-text">That happened in the corridor. Exciting, hot, perfect and everything wrapped up in one magical moment.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="memory-card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-icon">✨</div>
-                        <h3>New Beginning</h3>
-                    </div>
-                    <div class="card-back">
-                        <div class="memory-date">August 15</div>
-                        <div class="memory-text">Let's get something new. Your words sparked hope for all the adventures and memories we'll create together.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="carousel-nav">
-        <button class="nav-btn" onclick="rotateCarousel(-1)">⬅️ Previous</button>
-        <button class="nav-btn" onclick="rotateCarousel(1)">➡️ Next</button>
-    </div>
-</div>
-
 <script>
     // Easter egg sequence tracking
-    let clickSequence = [];
-    const correctSequence = ['designation', 'designation', 'powered', 'designation', 'powered', 'powered'];
+    let sequence = [];
+    const requiredSequence = ['designation', 'designation', 'powered', 'designation', 'powered', 'powered'];
     
     // Memory vault variables
+    const correctPassword = "07052003";
     let currentPosition = 0;
     let totalCards = 6;
     let isRotating = false;
@@ -1032,33 +1341,74 @@
     let startX = 0;
     let startY = 0;
 
-    // Handle clicks for easter egg
-    function handleClick(type) {
-        clickSequence.push(type);
+    // Loader delay with smooth fade out
+    window.addEventListener("load", function(){
+        setTimeout(function(){
+            const loader = document.getElementById("loader");
+            loader.style.opacity = "0";
+            setTimeout(function(){
+                loader.style.display = "none";
+            }, 300);
+        }, 2000);
+    });
+
+    // Add smooth animations on load
+    document.addEventListener("DOMContentLoaded", function() {
+        const profileContainer = document.querySelector('.profile-container');
+        profileContainer.style.opacity = '0';
+        profileContainer.style.transform = 'translateY(30px)';
         
-        // Check if sequence matches so far
-        let isValidSequence = true;
-        for (let i = 0; i < clickSequence.length; i++) {
-            if (clickSequence[i] !== correctSequence[i]) {
-                isValidSequence = false;
-                break;
+        setTimeout(function() {
+            profileContainer.style.transition = 'all 0.6s ease';
+            profileContainer.style.opacity = '1';
+            profileContainer.style.transform = 'translateY(0)';
+        }, 2000 + 200);
+
+        // Add click event listeners for easter egg
+        document.getElementById('designation').addEventListener('click', function() {
+            addToSequence('designation');
+        });
+
+        document.getElementById('poweredBy').addEventListener('click', function() {
+            addToSequence('powered');
+        });
+
+        // Reset sequence on any other click
+        document.body.addEventListener('click', function(e) {
+            if (e.target.id !== 'designation' && e.target.id !== 'poweredBy') {
+                resetSequence();
             }
+        });
+    });
+
+    function addToSequence(type) {
+        sequence.push(type);
+        
+        // Keep only the last 6 clicks
+        if (sequence.length > requiredSequence.length) {
+            sequence.shift();
         }
         
-        if (!isValidSequence) {
-            // Reset sequence if wrong
-            clickSequence = [];
-            if (type !== 'other') {
-                clickSequence.push(type);
+        // Check if sequence matches
+        if (sequence.length === requiredSequence.length) {
+            let matches = true;
+            for (let i = 0; i < requiredSequence.length; i++) {
+                if (sequence[i] !== requiredSequence[i]) {
+                    matches = false;
+                    break;
+                }
             }
-        } else if (clickSequence.length === correctSequence.length) {
-            // Show toast and open vault
-            showToast();
-            setTimeout(() => {
-                openVault();
-            }, 1500);
-            clickSequence = [];
+            
+            if (matches) {
+                showToast();
+                setTimeout(openVault, 1500);
+                resetSequence();
+            }
         }
+    }
+
+    function resetSequence() {
+        sequence = [];
     }
 
     function showToast() {
@@ -1066,48 +1416,90 @@
         toast.classList.add('show');
         setTimeout(() => {
             toast.classList.remove('show');
-        }, 3000);
+        }, 2000);
     }
 
     function openVault() {
-        const contactPage = document.getElementById('contactPage');
-        const memoryVault = document.getElementById('memoryVault');
-        
-        contactPage.style.opacity = '0';
-        contactPage.style.transform = 'translateY(-30px)';
-        
-        setTimeout(() => {
-            contactPage.classList.add('hidden');
-            memoryVault.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-            initializeCarousel();
-            initializeTouchEvents();
-        }, 600);
+        document.getElementById('contactPage').style.display = 'none';
+        document.getElementById('memoryVault').style.display = 'block';
     }
 
-    function backToContact() {
-        const contactPage = document.getElementById('contactPage');
-        const memoryVault = document.getElementById('memoryVault');
+    function logout() {
+        document.getElementById('memoryVault').style.display = 'none';
+        document.getElementById('contactPage').style.display = 'block';
         
-        memoryVault.style.opacity = '0';
-        memoryVault.style.transform = 'translateY(30px)';
+        // Reset vault state
+        document.getElementById('loginScreen').style.display = 'block';
+        document.getElementById('memoryVaultContent').style.display = 'none';
+        document.getElementById('passwordInput').value = '';
+        currentPosition = 0;
+        document.querySelectorAll('.memory-card').forEach(card => {
+            card.classList.remove('flipped');
+        });
+        resetSequence();
+    }
+
+    // Memory Vault Functions
+    function checkPassword() {
+        const inputPassword = document.getElementById("passwordInput").value;
+        const errorMessage = document.getElementById("errorMessage");
+        const loginScreen = document.getElementById("loginScreen");
+        const memoryVaultContent = document.getElementById("memoryVaultContent");
         
-        setTimeout(() => {
-            memoryVault.style.display = 'none';
-            contactPage.classList.remove('hidden');
-            contactPage.style.opacity = '1';
-            contactPage.style.transform = 'translateY(0)';
-            document.body.style.overflow = 'auto';
+        if (inputPassword === correctPassword) {
+            loginScreen.style.transform = "scale(0.9)";
+            loginScreen.style.opacity = "0";
             
-            // Reset carousel
-            currentPosition = 0;
-            document.querySelectorAll('.memory-card').forEach(card => {
-                card.classList.remove('flipped');
-            });
-        }, 600);
+            setTimeout(() => {
+                loginScreen.style.display = "none";
+                memoryVaultContent.style.display = "block";
+                initializeCarousel();
+                initializeTouchEvents();
+            }, 600);
+        } else {
+            errorMessage.classList.add("show");
+            document.getElementById("passwordInput").style.borderColor = "#e53e3e";
+            document.getElementById("passwordInput").style.animation = "shake 0.5s ease-in-out";
+            
+            setTimeout(() => {
+                errorMessage.classList.remove("show");
+                document.getElementById("passwordInput").style.borderColor = "#e2e8f0";
+                document.getElementById("passwordInput").style.animation = "";
+                document.getElementById("passwordInput").value = "";
+            }, 2000);
+        }
     }
 
-    // Memory vault functions
+    // Card positions for 6 cards in a circle
+    const cardPositions = [
+        { x: 0, y: -120, scale: 1, z: 10 },      // top
+        { x: 170, y: -60, scale: 0.85, z: 8 },   // top-right
+        { x: 170, y: 60, scale: 0.75, z: 6 },    // bottom-right
+        { x: 0, y: 120, scale: 0.7, z: 4 },      // bottom
+        { x: -170, y: 60, scale: 0.75, z: 6 },   // bottom-left
+        { x: -170, y: -60, scale: 0.85, z: 8 }   // top-left
+    ];
+
+    // Mobile positions (smaller)
+    const mobilePositions = [
+        { x: 0, y: -80, scale: 1, z: 10 },
+        { x: 120, y: -40, scale: 0.85, z: 8 },
+        { x: 120, y: 40, scale: 0.75, z: 6 },
+        { x: 0, y: 80, scale: 0.7, z: 4 },
+        { x: -120, y: 40, scale: 0.75, z: 6 },
+        { x: -120, y: -40, scale: 0.85, z: 8 }
+    ];
+
+    // Small mobile positions
+    const smallMobilePositions = [
+        { x: 0, y: -60, scale: 1, z: 10 },
+        { x: 100, y: -30, scale: 0.85, z: 8 },
+        { x: 100, y: 30, scale: 0.75, z: 6 },
+        { x: 0, y: 60, scale: 0.7, z: 4 },
+        { x: -100, y: 30, scale: 0.75, z: 6 },
+        { x: -100, y: -30, scale: 0.85, z: 8 }
+    ];
+    
     function initializeCarousel() {
         updateCardPositions();
         
@@ -1127,35 +1519,11 @@
         const isMobile = window.innerWidth <= 768;
         const isSmallMobile = window.innerWidth <= 480;
         
-        // Card positions for different screen sizes
-        let positions;
+        let positions = cardPositions;
         if (isSmallMobile) {
-            positions = [
-                { x: 0, y: -100, scale: 1, z: 10 },
-                { x: 120, y: -50, scale: 0.9, z: 9 },
-                { x: 120, y: 50, scale: 0.8, z: 8 },
-                { x: 0, y: 100, scale: 0.7, z: 7 },
-                { x: -120, y: 50, scale: 0.8, z: 8 },
-                { x: -120, y: -50, scale: 0.9, z: 9 }
-            ];
+            positions = smallMobilePositions;
         } else if (isMobile) {
-            positions = [
-                { x: 0, y: -120, scale: 1, z: 10 },
-                { x: 150, y: -60, scale: 0.9, z: 9 },
-                { x: 150, y: 60, scale: 0.8, z: 8 },
-                { x: 0, y: 120, scale: 0.7, z: 7 },
-                { x: -150, y: 60, scale: 0.8, z: 8 },
-                { x: -150, y: -60, scale: 0.9, z: 9 }
-            ];
-        } else {
-            positions = [
-                { x: 0, y: -150, scale: 1, z: 10 },
-                { x: 200, y: -75, scale: 0.9, z: 9 },
-                { x: 200, y: 75, scale: 0.8, z: 8 },
-                { x: 0, y: 150, scale: 0.7, z: 7 },
-                { x: -200, y: 75, scale: 0.8, z: 8 },
-                { x: -200, y: -75, scale: 0.9, z: 9 }
-            ];
+            positions = mobilePositions;
         }
         
         cards.forEach((card, index) => {
@@ -1244,9 +1612,9 @@
         
         if (Math.abs(deltaX) > 50) {
             if (deltaX > 0) {
-                rotateCarousel(1);
+                rotateCarousel(1); // Swipe left = next
             } else {
-                rotateCarousel(-1);
+                rotateCarousel(-1); // Swipe right = previous
             }
         }
         
@@ -1288,50 +1656,44 @@
         startX = 0;
         setTimeout(() => { isDragging = false; }, 100);
     }
-
+    
     // Handle window resize
     window.addEventListener('resize', () => {
-        if (document.getElementById("memoryVault").style.display === "block") {
+        if (document.getElementById("memoryVaultContent").style.display === "block") {
             updateCardPositions();
         }
     });
     
-    // Keyboard navigation for vault
+    // Enter key support
+    document.addEventListener('keypress', function(event) {
+        if (event.key === "Enter" && document.getElementById("memoryVault").style.display === "block") {
+            if (document.getElementById("loginScreen").style.display !== "none") {
+                checkPassword();
+            }
+        }
+    });
+    
+    // Keyboard navigation
     document.addEventListener('keydown', function(e) {
-        if (document.getElementById("memoryVault").style.display === "block") {
+        if (document.getElementById("memoryVaultContent").style.display === "block") {
             if (e.key === "ArrowLeft") {
                 rotateCarousel(-1);
             } else if (e.key === "ArrowRight") {
                 rotateCarousel(1);
-            } else if (e.key === "Escape") {
-                backToContact();
             }
         }
     });
-
-    // Loader functionality
-    window.addEventListener("load", function(){
-        setTimeout(function(){
-            const loader = document.getElementById("loader");
-            loader.style.opacity = "0";
-            setTimeout(function(){
-                loader.style.display = "none";
-            }, 300);
-        }, 2000);
-    });
-
-    // Add smooth animations on load
-    document.addEventListener("DOMContentLoaded", function() {
-        const profileContainer = document.querySelector('.profile-container');
-        profileContainer.style.opacity = '0';
-        profileContainer.style.transform = 'translateY(30px)';
-        
-        setTimeout(function() {
-            profileContainer.style.transition = 'all 0.6s ease';
-            profileContainer.style.opacity = '1';
-            profileContainer.style.transform = 'translateY(0)';
-        }, 2000 + 200);
-    });
+    
+    // Add shake animation
+    const style = document.createElement("style");
+    style.textContent = `
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 
 </body>
